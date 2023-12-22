@@ -5,19 +5,21 @@
 //  Created by WKS-MAC01 on 22/12/2023.
 //
 
+import AVKit
 import SwiftUI
-
 struct FeedCell: View {
-    let post: Int
+    let post: Post
+    var player: AVPlayer
+
+    init(post: Post, player: AVPlayer) {
+        self.post = post
+        self.player = player
+    }
+
     var body: some View {
         ZStack {
-            Rectangle()
-                .fill(.green)
+            CustomVideoPlayer(player: player)
                 .containerRelativeFrame([.horizontal, .vertical])
-                .overlay {
-                    Text("Post \(post)")
-                        .foregroundStyle(.white)
-                }
 
             VStack {
                 Spacer()
@@ -77,9 +79,13 @@ struct FeedCell: View {
             }
             .padding()
         }
+        .onAppear {
+            player.play()
+        }
     }
 }
 
 #Preview {
-    FeedCell(post: 2)
+    FeedCell(post: Post(id: "1", videoUrl: URL(string: "https://www.tiktok.com/@scout2015/video/6897390845427347973?lang=en&is_copy_url=1&is_from_webapp=v1")!),
+             player: AVPlayer())
 }
